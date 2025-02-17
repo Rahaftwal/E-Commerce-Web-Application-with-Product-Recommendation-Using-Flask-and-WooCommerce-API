@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account</title>
+    <link rel="stylesheet" href="../static/styles/myaccount.css">
+
+</head>
+<body>
+    <div class="account-container">
+        <h1>My Account</h1>
+        <form action="/my-account" method="POST">
+            <div class="user-info">
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" value="{{ user['first_name'] }}" required>
+            </div>
+            <div class="user-info">
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" value="{{ user['last_name'] }}" required>
+            </div>
+            <div class="user-info">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ user['email'] }}" readonly>
+            </div>
+            <div class="user-info">
+                <label for="phone">Phone:</label>
+                <input type="text" id="phone" name="phone" value="{{ user['billing']['phone'] }}">
+            </div>
+            <div class="user-info">
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" value="{{ user['billing']['city'] }}">
+            </div>
+            <div class="user-info">
+                <label for="country">Country or Region:</label>
+                <select id="country" name="country">
+                    <option value="JO" {% if user['billing']['country'] == 'JO' %}selected{% endif %}>Jordan</option>
+                    <option value="US" {% if user['billing']['country'] == 'US' %}selected{% endif %}>United States</option>
+                    <option value="GB" {% if user['billing']['country'] == 'GB' %}selected{% endif %}>United Kingdom</option>
+                    <option value="AE" {% if user['billing']['country'] == 'AE' %}selected{% endif %}>United Arab Emirates</option>
+                    <option value="EG" {% if user['billing']['country'] == 'EG' %}selected{% endif %}>Egypt</option>
+                    <!-- Add more countries as needed -->
+                </select>
+            </div>
+            <button type="submit">Save Changes</button>
+        </form>
+        <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+    </div>
+</body>
+</html>

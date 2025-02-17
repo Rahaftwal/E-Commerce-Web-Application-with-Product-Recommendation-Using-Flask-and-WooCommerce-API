@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags for character encoding and responsive design -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Page title -->
+    <title>Products</title>
+
+    <!-- Link to the custom CSS stylesheet -->
+    <link rel="stylesheet" href="../static/styles/styles.css">
+
+    <!-- Link to the Font Awesome stylesheet for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cartButtons = document.querySelectorAll('.add-to-cart');
+
+        cartButtons.forEach(button => {
+            button.addEventListener('click', event => {
+                event.preventDefault();
+
+                const productId = button.getAttribute('data-product-id');
+                const productName = button.getAttribute('data-product-name');
+                const productImage = button.getAttribute('data-product-image');
+                const productPrice = button.getAttribute('data-product-price');
+
+                const data = {
+                    product_id: productId,
+                    product_name: productName,
+                    product_image: productImage,
+                    product_price: productPrice,
+                    quantity: 1  // Default quantity to 1 when adding to cart
+                };
+
+                fetch('/add_to_cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.text())
+                .then(() => {
+                    // Change the icon color to red by adding a class
+                    button.classList.add('added-to-cart');
+                })
+                .catch(error => console.error('Error adding product to cart:', error));
+            });
+        });
+    });
+</script>
+
+</head>
+<body>
+    <!-- Top bar with the store name and navigation icons -->
+    <div class="app-bar">
+        <h1>My Store</h1>
+        <div class="nav-icons">
+            <!-- Links to user account, favorites, and shopping cart pages -->
+            <a href="/my-account" title="My Account"><i class="fas fa-user"></i></a>
+            <a href="/favorites" title="Favorites"><i class="fas fa-heart"></i></a>
+            <a href="/cart" title="Cart"><i class="fas fa-shopping-cart"></i></a>
+        </div>
+    </div>
+
+    <!-- Header for the products section -->
+    <div class="products-header">
+        <h2>Discover Our Featured Products</h2>
+        <p>A diverse collection of high-quality products at competitive prices</p>
+    </div>
+
+    <div class="categories-bar">
+        <div class="category-item">All Products</div>
+        <div class="category-item">Electronics</div>
+        <div class="category-item">Clothing</div>
+        <div class="category-item">Furniture</div>
+        <div class="category-item">Home Essentials</div>
+    </div>
+
+    <!-- Container that holds the product items -->
+    <div class="product-container">
+        <!-- Loop through the list of products and display each product -->
+        {% for product in products %}
+            <div class="product-item">
+                <div class="favorite-btn" onclick="toggleWishlist('{{ product.id_str }}')">
+                    <i class="fas fa-heart {% if product.id_str in session.get('favorites', []) %}active{% endif %}"></i>
+                </div>
+                <div class="product-image-container">
+                    <img src="{{ product.images[0].src }}" alt="{{ product.name }}">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">{{ product.name }}</h3>
+                    <div class="product-price">${{ product.price }}</div>
+                    <div class="product-actions">
+                        <button class="add-to-cart-btn" onclick="addToCart('{{ product.id }}')">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Shop With Us</h3>
+                <ul>
+                    <li><a href="/new-arrivals">New Arrivals</a></li>
+                    <li><a href="/best-sellers">Best Sellers</a></li>
+                    <li><a href="/offers">Special Offers</a></li>
+                    <li><a href="/categories">Categories</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Customer Service</h3>
+                <ul>
+                    <li><a href="/contact">Contact Us</a></li>
+                    <li><a href="/shipping">Shipping Policy</a></li>
+                    <li><a href="/returns">Returns Policy</a></li>
+                    <li><a href="/faq">FAQ</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>My Account</h3>
+                <ul>
+                    <li><a href="/my-account">My Account</a></li>
+                    <li><a href="/orders">My Orders</a></li>
+                    <li><a href="/wishlist">Wishlist</a></li>
+                    <li><a href="/notifications">Notifications</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 My Store. All Rights Reserved</p>
+        </div>
+    </footer>
+</body>
+</html>

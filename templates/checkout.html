@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="../static/styles/styles.css">
+    <link rel="stylesheet" href="../static/styles/checkout.css">
+
+</head>
+<body>
+    <div class="app-bar">
+        <h1>Checkout</h1>
+    </div>
+    <div class="checkout-container">
+        <div class="checkout-items">
+            <h2>Review your items</h2>
+            {% for item in cart %}
+                <div class="checkout-item">
+                    <img src="{{ item[2] }}" alt="{{ item[1] }}">
+                    <div>
+                        <h3>{{ item[1] }}</h3>
+                        <p>Price: ${{ item[3] }}</p>
+                        <p>Quantity: {{ item[4] }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="checkout-total">
+                <h3>Total Price: ${{ total_price }}</h3>
+            </div>
+        </div>
+        <div class="payment-form">
+            <h2>Payment Details</h2>
+            <form action="/checkout" method="POST">
+                <div class="form-group">
+                    <label for="first_name">First Name</label>
+                    <input type="text" id="first_name" name="first_name" value="{{ user.first_name if user else '' }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" id="last_name" name="last_name" value="{{ user.last_name if user else '' }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="text" id="phone" name="phone" value="{{ user.billing.phone if user else '' }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ user.email if user else '' }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="address1">Address 1</label>
+                    <input type="text" id="address1" name="address1" value="{{ user.address_1 if user else '' }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="address2">Address 2 (Optional)</label>
+                    <input type="text" id="address2" name="address2" value="{{ user.address_2 if user else '' }}">
+                </div>
+                <div class="form-group">
+                    <label for="region">Region</label>
+                    <input type="text" id="region" name="region" value="{{ user.state if user else '' }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <select id="country" name="country" required>
+                        <option value="JO" {% if user.country == 'JO' %}selected{% endif %}>Jordan</option>
+                        <option value="US" {% if user.country == 'US' %}selected{% endif %}>United States</option>
+                        <option value="GB" {% if user.country == 'GB' %}selected{% endif %}>United Kingdom</option>
+                        <option value="AE" {% if user.country == 'AE' %}selected{% endif %}>United Arab Emirates</option>
+                        <option value="EG" {% if user.country == 'EG' %}selected{% endif %}>Egypt</option>
+                        <!-- Add more countries as needed -->
+                    </select>
+                </div>
+                <button type="submit" class="confirm-button">Confirm Order</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Favorites</title>
+    <link rel="stylesheet" href="../static/styles/styles.css">
+    <link rel="stylesheet" href="../static/styles/favorites.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- App Bar -->
+    <div class="app-bar">
+        <h1>My Store</h1>
+        <div class="nav-icons">
+            <a href="/my-account" title="My Account"><i class="fas fa-user"></i></a>
+            <a href="/favorites" title="Favorites"><i class="fas fa-heart"></i></a>
+            <a href="/cart" title="Cart"><i class="fas fa-shopping-cart"></i></a>
+        </div>
+    </div>
+
+    <!-- Favorites Header Section -->
+    <div class="favorites-header">
+        <div class="favorites-header-content">
+            <h2>My Favorites</h2>
+            <p>Your collection of favorite items</p>
+        </div>
+    </div>
+
+    <!-- Favorites Content -->
+    <div class="favorites-container">
+        {% if favorites %}
+            <div class="favorites-grid">
+                {% for product_id in favorites %}
+                    {% set product = products[product_id] %}
+                    <div class="favorite-item">
+                        <div class="favorite-image">
+                            <img src="{{ product.images[0].src }}" alt="{{ product.name }}">
+                        </div>
+                        <div class="favorite-info">
+                            <h3>{{ product.name }}</h3>
+                            <p class="price">${{ product.price }}</p>
+                            <div class="favorite-actions">
+                                <button class="add-to-cart-btn">Add to Cart</button>
+                                <a href="{{ url_for('remove_from_wishlist', product_id=product_id) }}" class="remove-btn">
+                                    <i class="fas fa-heart"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-favorites">
+                <i class="fas fa-heart"></i>
+                <p>Your favorites list is empty</p>
+                <a href="/" class="continue-shopping">Continue Shopping</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Shop With Us</h3>
+                <ul>
+                    <li><a href="/new-arrivals">New Arrivals</a></li>
+                    <li><a href="/best-sellers">Best Sellers</a></li>
+                    <li><a href="/offers">Special Offers</a></li>
+                    <li><a href="/categories">Categories</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Customer Service</h3>
+                <ul>
+                    <li><a href="/contact">Contact Us</a></li>
+                    <li><a href="/shipping">Shipping Policy</a></li>
+                    <li><a href="/returns">Returns Policy</a></li>
+                    <li><a href="/faq">FAQ</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>My Account</h3>
+                <ul>
+                    <li><a href="/my-account">My Account</a></li>
+                    <li><a href="/orders">My Orders</a></li>
+                    <li><a href="/wishlist">Wishlist</a></li>
+                    <li><a href="/notifications">Notifications</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 My Store. All Rights Reserved</p>
+        </div>
+    </footer>
+</body>
+</html>
+

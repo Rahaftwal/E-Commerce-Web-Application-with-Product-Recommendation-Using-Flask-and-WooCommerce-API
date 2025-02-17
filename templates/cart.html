@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta information for character encoding and viewport settings -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+
+    <!-- Link to external CSS files for styling the page -->
+    <link rel="stylesheet" href="../static/styles/styles.css">
+    <link rel="stylesheet" href="../static/styles/cart.css">
+
+    <!-- Link to Font Awesome for icons (user, heart, cart, trash) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- App Bar -->
+    <div class="app-bar">
+        <h1>My Store</h1>
+        <div class="nav-icons">
+            <!-- Links to 'My Account', 'Favorites', and 'Cart' pages with icons -->
+            <a href="/my-account" title="My Account"><i class="fas fa-user"></i></a>
+            <a href="/favorites" title="Favorites"><i class="fas fa-heart"></i></a>
+            <a href="/cart" title="Cart"><i class="fas fa-shopping-cart"></i></a>
+        </div>
+    </div>
+
+    <!-- Cart Header Section -->
+    <div class="cart-header">
+        <div class="cart-header-content">
+            <h2>Your Shopping Cart</h2>
+            <p>Review and manage your selected items</p>
+        </div>
+    </div>
+
+    <!-- Cart Content -->
+    <div class="cart">
+        <!-- Check if the cart has any items -->
+        {% if cart %}
+            <!-- Unordered list to display each item in the cart -->
+            <ul class="cart-items">
+                <!-- Loop through each item in the cart -->
+                {% for item in cart %}
+                    <li class="cart-item-container">
+                        <!-- Display product image -->
+                        <img src="{{ item[2] }}" alt="{{ item[1] }}">
+
+                        <!-- Display product information -->
+                        <div class="cart-item-info">
+                            <p class="product-name">{{ item[1] }}</p> <!-- Product name -->
+                            <p class="product-price">Price: ${{ item[3] }}</p> <!-- Price of the item -->
+                            <p class="product-quantity">Quantity: {{ item[4] }}</p> <!-- Quantity selected -->
+                            <p class="product-total">Total: ${{ item[3] * item[4] }}</p> <!-- Total price per item -->
+                        </div>
+
+                        <!-- Form for removing an item from the cart -->
+                        <form action="{{ url_for('remove_from_cart', item_index=loop.index0) }}" method="post">
+                            <!-- Button to trigger item removal (trash icon) -->
+                            <button type="submit" class="delete-icon"><i class="fas fa-trash-alt"></i></button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <!-- Display total cart price -->
+            <div class="cart-summary">
+                <h3>Total Amount: ${{ total_price }}</h3>
+
+                <!-- Link to proceed to the checkout page -->
+                <a href="/checkout" class="checkout-button">Proceed to Checkout</a>
+            </div>
+
+        <!-- If the cart is empty, show a message -->
+        {% else %}
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Your cart is empty</p>
+                <a href="/" class="continue-shopping">Continue Shopping</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Shop With Us</h3>
+                <ul>
+                    <li><a href="/new-arrivals">New Arrivals</a></li>
+                    <li><a href="/best-sellers">Best Sellers</a></li>
+                    <li><a href="/offers">Special Offers</a></li>
+                    <li><a href="/categories">Categories</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Customer Service</h3>
+                <ul>
+                    <li><a href="/contact">Contact Us</a></li>
+                    <li><a href="/shipping">Shipping Policy</a></li>
+                    <li><a href="/returns">Returns Policy</a></li>
+                    <li><a href="/faq">FAQ</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>My Account</h3>
+                <ul>
+                    <li><a href="/my-account">My Account</a></li>
+                    <li><a href="/orders">My Orders</a></li>
+                    <li><a href="/wishlist">Wishlist</a></li>
+                    <li><a href="/notifications">Notifications</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 My Store. All Rights Reserved</p>
+        </div>
+    </footer>
+</body>
+</html>
