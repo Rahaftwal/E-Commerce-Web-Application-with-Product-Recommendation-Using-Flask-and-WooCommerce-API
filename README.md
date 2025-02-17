@@ -78,5 +78,5 @@ python run.py
 - **LinkedIn:** [Rahaf Al-Twal](https://www.linkedin.com/in/rahaf-al-twal/)  
 
 ---
-❤️ Rahaf Altwal
+❤️ Designed and developed by **Rahaf Twal**
 
